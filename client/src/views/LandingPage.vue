@@ -1,6 +1,5 @@
 <script setup>
 import axios from "axios";
-import router from "../router";
 
 const signIn = async () => {
   try {
@@ -9,9 +8,6 @@ const signIn = async () => {
     });
     console.log(response);
     // handle the authentication response, such as redirecting the user to the authenticated page
-    //this.$router.push({ path: '/LandingPage', redirect: { name: 'dashboard' } });
-    
-    
   } catch (error) {
     // handle the authentication error, such as showing an error message to the user
   }
@@ -145,8 +141,8 @@ h5 {
     <div class="dark-overlay">
       <div class="main-content">
         <div class="bgimg-inner">
-          <h4>ALL-IN-ONE MEETING MANAGEMENT</h4>
-          <h1>Everything you need to organize meeting</h1>
+          <h4>In the LandingPage Bhai</h4>
+          <h1>Lets fucking go</h1>
           <button class="google-sign" @click="signIn">Sign In with Google</button>
 
           <h5>Attendify helps you schedule meetings and track the attendance.</h5>
