@@ -1,16 +1,59 @@
 <script setup>
 import axios from "axios";
+import { decodeCredential } from "vue3-google-login";
+import * as Vue from "vue";
+import { useRouter } from "vue-router";
 
-const signIn = async () => {
-  try {
-    const response = await axios.get("http://localhost:3000/auth/google", {
-      // add any necessary request data, such as user credentials or tokens
-    });
-    console.log(response);
-    // handle the authentication response, such as redirecting the user to the authenticated page
-  } catch (error) {
-    // handle the authentication error, such as showing an error message to the user
-  }
+const router = useRouter();
+const { API_URL } = "http://localhost:3000/auth";
+const GOOGLE_URL = API_URL + "/google";
+
+const callback = function (response) {
+  // This callback will be triggered when user click on the One Tap prompt
+  // This callback will be also triggered when user click on login button
+  // and selects or login to his Google account from the popup
+  // decodeCredential will retrive the JWT payload from the credential
+  const userData = decodeCredential(response.credential);
+  console.log(response);
+  localStorage.token = response.credential;
+  router.push("/dashboard");
+  console.log("Handle the userData", userData);
+};
+</script>
+<script>
+export default {
+  methods: {
+    googlePlus() {
+      Vue.googleAuth().directAccess();
+      Vue.googleAuth().signIn((authorizationCode) => {
+        // things to do when sign-in succeeds
+        //      console.log('access_token', authorizationCode.Zi.access_token);
+        // You can send the authorizationCode to your backend server for further processing, for example
+        fetch(GOOGLE_URL, {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({
+            access_token: authorizationCode.Zi.access_token,
+          }),
+        })
+          .then((response) => {
+            if (response.ok) return response.json();
+            return response.json().then((error) => {
+              throw new Error(error.message);
+            });
+          })
+          .then((result) => {
+            localStorage.token = result.token;
+            this.$router.push("/dashboard");
+          })
+          .catch((error) => {
+            // console.log("error", error);
+          });
+      });
+    },
+  },
 };
 </script>
 <style>
@@ -107,7 +150,7 @@ const signIn = async () => {
   font-weight: 550;
 }
 
-.google-sign {
+GoogleLogin {
   width: 230px;
   padding: 10px;
   font-size: 18px;
@@ -143,8 +186,9 @@ h5 {
         <div class="bgimg-inner">
           <h4>ALL-IN-ONE MEETING MANAGEMENT</h4>
           <h1>Everything you need to organize meeting</h1>
-          <button class="google-sign" @click="signIn">Sign In with Google</button>
-
+          <p><br /></p>
+          <!-- <button class="google-sign" @click="googlePlus">Sign In with Google</button> -->
+          <GoogleLogin :callback="callback" />
           <h5>Attendify helps you schedule meetings and track the attendance.</h5>
         </div>
       </div>

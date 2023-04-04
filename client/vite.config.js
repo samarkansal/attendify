@@ -13,7 +13,7 @@ export default defineConfig({
   },
   devServer: {
     proxy: {
-      '/auth': {
+      '/api': {
         target: 'http://localhost:3000',
         changeOrigin: false,
         secure: false
