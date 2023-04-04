@@ -58,7 +58,7 @@ footer {
       <ul>
         <h4>Explore</h4>
         <li><router-link to="/">Home</router-link></li>
-        <li><router-link to="/">About</router-link></li>
+        <li><router-link to="/about">About</router-link></li>
         <li><router-link to="/">FAQ's</router-link></li>
       </ul>
       <ul>

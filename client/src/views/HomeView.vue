@@ -107,12 +107,6 @@ export default {
   justify-content: center;
 }
 
-.quote-author {
-  font-size: 0.8em;
-  font-family: cursive, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-}
-
 .bg-hero {
   position: relative;
   background-attachment: fixed;
