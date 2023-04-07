@@ -1,4 +1,14 @@
-<script setup lang="ts"></script>
+<script setup>
+import { getUserName } from "../utils/userDetail";
+import { clearToken } from "../utils/userDetail";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+const logout = () => {
+  clearToken();
+  router.push("/");
+};
+</script>
 
 <style scoped>
 /**
@@ -159,6 +169,10 @@ header .flexItem {
   height: 1.25em;
 }
 
+.login:hover {
+  cursor: pointer;
+}
+
 .searchBox input[type="search"] {
   width: 15em;
   padding: 1em;
@@ -180,21 +194,12 @@ header .cartAndCategories li {
 header .cart {
   display: inline-block;
   vertical-align: middle;
-  width: 2.2em;
-  height: 2.2em;
-  margin-right: 2.5em;
-  background: transparent url("/logo-images/cart.png");
   background-size: contain;
-  margin-top: -12px;
   opacity: 0.8;
 }
 
 header .cart:hover {
   opacity: 1;
-}
-
-header .itemCount {
-  padding-left: 18px;
 }
 
 /**
@@ -215,7 +220,7 @@ header {
   min-height: 2.7em;
   width: 100%;
   z-index: 1;
-  padding: 1.1rem 1.5rem 0.8rem 2rem;
+  padding: 1.1rem 2.5rem 0.8rem 2.5rem;
 }
 
 footer {
@@ -233,10 +238,16 @@ footer {
     </div>
     <div class="flexItem">
       <ul class="header-nav2">
-        <a href="#">
-          <li class="cart"><!--<span class="itemCount">0</span>--></li>
-        </a>
-        <li class="login"><a href="#">Sign In</a></li>
+        <!-- <a href="#">
+          <li class="cart">Help<span class="itemCount">0</span></li>
+        </a> -->
+
+        <li v-if="getUserName() !== ''" class="login">
+          <a @click="logout">Sign out</a>
+        </li>
+
+        <li class="login" v-else>Sign in</li>
+
         <li>
           <div class="search-container">
             <form action="/search" method="get">

@@ -95,71 +95,70 @@ app.use(express.static(path.join(__dirname, "public")));
 // Routes
 // app.use("/", require("./routes/index"));
 // app.use("/auth", require("./routes/auth"));
+app.use("/api/meeting", require("./routes/api/meeting"));
+app.use("/api/meetingAttendance", require("./routes/api/meetingAttendance"));
 
 const PORT = process.env.PORT || 3000;
 
-
-var QRCode = require('qrcode')
+var QRCode = require("qrcode");
 
 const Jimp = require("jimp");
 
 // __ Importing filesystem = __ \\
-const fs = require('fs')
+const fs = require("fs");
 
 // __ Importing qrcode-reader __ \\
-const qrCodeReader = require('qrcode-reader');
-
-
-
+const qrCodeReader = require("qrcode-reader");
 
 app.get("/generateQR", (req, res, next) => {
-  QRCode.toFile('./file.png', 'Encode this text in QR code', {
-    errorCorrectionLevel: 'H'
-  }, function(err) {
-    if (err) throw err;
-    console.log('QR code saved!');
- });
+  QRCode.toFile(
+    "./file.png",
+    "Encode this text in QR code",
+    {
+      errorCorrectionLevel: "H",
+    },
+    function (err) {
+      if (err) throw err;
+      console.log("QR code saved!");
+    }
+  );
   QRCode.toDataURL("LMAOOOO", function (err, code) {
-    if(err) return console.log("error occurred")
- 
-    // Printing the code
-      console.log(code)
-      
-      res.send(code)
-  })
+    if (err) return console.log("error occurred");
 
+    // Printing the code
+    console.log(code);
+
+    res.send(code);
+  });
 });
 // app.get("/url", (req, res, next) => {
 //   res.json(["Tony","Lisa","Michael","Ginger","Food"]);
 //  });
-  
- 
 
 app.get("/scanQR", (req, res, next) => {
-  const buffer = fs.readFileSync('./file.png');
- 
-// __ Parse the image using Jimp.read() __ \\
-  Jimp.read(buffer, function(err, image) {
+  const buffer = fs.readFileSync("./file.png");
+
+  // __ Parse the image using Jimp.read() __ \\
+  Jimp.read(buffer, function (err, image) {
+    if (err) {
+      console.error(err);
+    }
+    // __ Creating an instance of qrcode-reader __ \\
+
+    const qrCodeInstance = new qrCodeReader();
+
+    qrCodeInstance.callback = function (err, value) {
       if (err) {
-          console.error(err);
+        console.error(err);
       }
-  // __ Creating an instance of qrcode-reader __ \\
+      // __ Printing the decrypted value __ \\
+      console.log(value.result);
+      res.send(value.result);
+    };
 
-      const qrCodeInstance = new qrCodeReader();
-
-      qrCodeInstance.callback = function(err, value) {
-          if (err) {
-              console.error(err);
-          }
-  // __ Printing the decrypted value __ \\
-          console.log(value.result);
-          res.send(value.result);
-      };
-
-  // __ Decoding the QR code __ \\
-      qrCodeInstance.decode(image.bitmap);
+    // __ Decoding the QR code __ \\
+    qrCodeInstance.decode(image.bitmap);
   });
-  
 });
 
 app.listen(

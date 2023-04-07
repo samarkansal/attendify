@@ -10,6 +10,10 @@ function isLoggedIn(to, from, next) {
 }
 
 const router = createRouter({
+  scrollBehavior() {
+    // always scroll to top
+    return { top: 0 }
+  },
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
@@ -29,6 +33,12 @@ const router = createRouter({
       path: '/dashboard',
       name: 'dashboard',
       component: () => import('../views/DashboardView.vue'),
+      beforeEnter: isLoggedIn
+    },
+    {
+      path: '/event',
+      name: 'event',
+      component: () => import('../views/EventView.vue'),
       beforeEnter: isLoggedIn
     }
   ]

@@ -6,3 +6,18 @@ export const getUserName = () => {
   }
   return ''
 }
+
+export const getUserEmail = () => {
+  if (localStorage.token) {
+    const userData = decodeCredential(localStorage.token)
+    return userData.email
+  }
+  return ''
+}
+
+export const clearToken = () => {
+  if (localStorage.token) {
+    localStorage.setItem('token', '')
+  }
+  return ''
+}
