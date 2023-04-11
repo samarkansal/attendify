@@ -1,11 +1,19 @@
 const { Router } = require("express");
 const MeetingAttendance = require("../../models/MeetingAttendance");
+const mongoose = require("mongoose");
 
 const router = Router();
 
-router.get("/", async (req, res) => {
+router.get("/:meetingId", async (req, res) => {
   try {
-    const meetingAttendanceList = await MeetingAttendance.find();
+    const meetingId = req.params.meetingId;
+    console.log(meetingId);
+    if (!mongoose.Types.ObjectId.isValid(meetingId)) {
+      throw new Error("Invalid Meeting ID");
+    }
+    const meetingAttendanceList = await MeetingAttendance.find({
+      meeting_id: meetingId,
+    });
     if (!meetingAttendanceList) throw new Error("No Meeting List found");
     res.status(200).json(meetingAttendanceList);
   } catch (error) {
@@ -14,18 +22,23 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  let meetingAttendances = [];
-  for (var i = 0; i < req.body.guestList.length; i++) {
-    console.log(req.body.guestList[i].label);
-    meetingAttendances.push({
-      meeting_id: req.body.id,
-      user_id: req.body.guestList[i].label,
-      attended: false,
-    });
-  }
-  //const newMeeting = new MeetingAttendance(req.body.meetingDetails);
   try {
+    console.log(req.body.guestList);
+    let meetingAttendances = [];
+    for (var i = 0; i < req.body.guestList.length; i++) {
+      console.log(req.body.guestList[i].label);
+      meetingAttendances.push({
+        meeting_id: req.body.id,
+        user_id: req.body.guestList[i].label,
+        attended: false,
+        qr_code: "",
+      });
+    }
+    console.log(meetingAttendances);
+    //const newMeeting = new MeetingAttendance(req.body.meetingDetails);
+
     const result = await MeetingAttendance.insertMany(meetingAttendances);
+    console.log(result);
     if (!result)
       throw new Error(
         "Something went wrong while saving the Meeting Attendance"
@@ -34,6 +47,7 @@ router.post("/", async (req, res) => {
     // do something with the response, if needed
     res.status(200).json(result);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: error.message });
   }
 });

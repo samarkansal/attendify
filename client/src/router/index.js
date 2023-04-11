@@ -50,6 +50,16 @@ const router = createRouter({
       path: '/qr',
       name: 'qr',
       component: () => import('../views/QrView.vue')
+    },
+    {
+      path: '/scan',
+      name: 'scan',
+      component: () => import('../views/ScanView.vue')
+    },
+    {
+      path: '/attendance/:meetingId',
+      name: 'attendance',
+      component: () => import('../views/AttendanceView.vue')
     }
   ]
 })

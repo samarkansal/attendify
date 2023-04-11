@@ -3,7 +3,7 @@
     <h1 v-if="timeLeft > 0">Your code will expire in {{ timeLeft }} seconds.</h1>
     <h1 v-else>QR code expired. Please refresh the code.</h1>
     <div v-if="qrCodeData" class="code-cont">
-      <qrcode-vue :value="qrCodeData" :size="size" level="H" />
+      <qrcode-vue :value="qrCodeData" :size="size" level="L" />
       <button class="refresh-qr" @click="generateQRAndStartTimer">Refresh Code</button>
     </div>
   </div>
@@ -42,8 +42,8 @@ export default {
             },
           }
         );
-        console.log(response.data.qr_code);
-        qrCodeData.value = response.data.qr_code;
+        console.log(response.data);
+        qrCodeData.value = response.data;
         timeLeft.value = 30;
       } catch (error) {
         console.error(error);

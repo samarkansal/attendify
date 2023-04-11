@@ -14,52 +14,50 @@ router.post("/generateQR", async (req, res, next) => {
   const inputString = `${meetingId},${userId},${expirationTime}`;
 
   try {
-    const code = await QRCode.toDataURL(inputString, { version: 4 });
-    console.log(code);
+    const code = await QRCode.toDataURL("inputString", { version: 1 });
+    const strc = await QRCode.toString(inputString);
     // Printing the code
-    // console.log(code);
+    // console.log(strc);
 
-    const meetingAttendance = new MeetingAttendance({
+    const meetingAttendance = await MeetingAttendance.findOne({
       meeting_id: meetingId,
       user_id: userId,
-      attended: false,
-      qr_code: code,
     });
 
-    const doc = await meetingAttendance.save();
-
-    res.status(200).json(doc);
+    if (meetingAttendance) {
+      meetingAttendance.qr_code = inputString;
+      meetingAttendance.save();
+      res.status(200).json(inputString);
+    } else {
+      res.status(400).json({ message: "Not a valid meeting or user" });
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-router.get("/checkQR/:id", async (req, res, next) => {
-  const id = req.params.id;
+router.post("/verifyQR", async (req, res, next) => {
+  const qrCode = req.body.qrCode;
 
   try {
-    const meetingAttendance = await MeetingAttendance.findById(id);
+    const meetingAttendance = await MeetingAttendance.findOne({
+      qr_code: qrCode,
+    });
     if (!meetingAttendance) {
-      res.status(404).json({ message: "Meeting attendance not found" });
-      return;
+      return res.status(400).json({ message: "Invalid QR code" });
     }
 
-    const qrCode = meetingAttendance.qr_code;
-    const inputString = qrCode.split(","); // Splitting the input string by comma separator
-    const meetingId = inputString[0];
-    const userId = inputString[1];
-    const expirationTime = inputString[2];
-
-    if (new Date().getTime() > expirationTime) {
-      res.status(400).json({ message: "QR code has expired" });
-      return;
+    const currentTime = new Date().getTime();
+    const expirationTime = parseInt(qrCode.split(",")[2]);
+    if (currentTime > expirationTime) {
+      return res.status(400).json({ message: "QR code has expired" });
     }
 
-    // QR code is valid
+    // Update attendance status
     meetingAttendance.attended = true;
     await meetingAttendance.save();
 
-    res.status(200).json({ message: "QR code is valid" });
+    res.status(200).json({ message: "QR code verified" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

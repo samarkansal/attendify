@@ -144,8 +144,8 @@ const formatDateTime = (input) => {
 }
 
 .meeting-box {
-  height: 220px;
-  width: 300px;
+  height: 270px;
+  width: 310px;
   padding: 2rem 1.5rem;
   color: rgb(212, 212, 212);
   border-top: 5px solid;
@@ -175,6 +175,25 @@ const formatDateTime = (input) => {
   color: rgb(220, 220, 220);
   margin-bottom: 1rem;
 }
+
+.scan-link {
+  color: rgb(154, 158, 255);
+  font-size: 1.2rem;
+}
+
+.scan-link:hover {
+  color: rgb(180, 180, 248);
+}
+
+.attendance-link {
+  margin-top: 10px;
+  color: rgb(59, 65, 246);
+  font-size: 1rem;
+}
+
+.attendance-link:hover {
+  color: rgb(55, 55, 211);
+}
 </style>
 
 <template>
@@ -190,6 +209,13 @@ const formatDateTime = (input) => {
           </h3>
 
           <h4>{{ meeting.description }}</h4>
+          <router-link to="/scan">
+            <div class="scan-link">Attendance scanner</div>
+          </router-link>
+
+          <router-link :to="`/attendance/${meeting._id}`">
+            <div class="attendance-link">View Attendance</div>
+          </router-link>
         </div>
       </li>
     </ul>
