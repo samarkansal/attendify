@@ -8,6 +8,7 @@ const meetingAttendanceSchema = new mongoose.Schema({
   },
   user_id: { type: String, required: true },
   attended: { type: Boolean, required: true },
+  qr_code: { type: String, required: true },
 });
 
 MeetingAttendance = mongoose.model(

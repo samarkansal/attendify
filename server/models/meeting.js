@@ -7,7 +7,7 @@ const meetingSchema = new mongoose.Schema({
   start_time: { type: Date, required: true },
   end_time: { type: Date, required: true },
   organizer: { type: String, required: true },
-  qr_code: { type: String },
+  passkey: { type: String, required: true },
 });
 
 Meeting = mongoose.model("Meeting", meetingSchema);

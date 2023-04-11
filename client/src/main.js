@@ -13,7 +13,10 @@ app.use(createPinia())
 app.use(router)
 
 app.use(vue3GoogleLogin, {
-  clientId: '1054586386822-oqloh2jc5tmhsnmicntac5il7o4hfiqn.apps.googleusercontent.com'
+  clientId: '1054586386822-oqloh2jc5tmhsnmicntac5il7o4hfiqn.apps.googleusercontent.com',
+  scope:
+    'https://www.googleapis.com/auth/calendar, https://www.googleapis.com/auth/calendar.events',
+  prompt: 'consent'
 })
 
 app.mount('#app')

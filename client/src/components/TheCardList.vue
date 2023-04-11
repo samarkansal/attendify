@@ -137,7 +137,7 @@ const formatDateTime = (input) => {
 }
 
 .empty-container h1 {
-  color: rgb(28, 28, 28);
+  color: rgb(223, 223, 223);
 }
 .list-container li:last-child {
   margin-bottom: 200px;
@@ -146,23 +146,33 @@ const formatDateTime = (input) => {
 .meeting-box {
   height: 220px;
   width: 300px;
-  border: 2px solid;
-  border-top: 8px solid;
-  border-top-color: rgb(57, 57, 189);
-  border-radius: 8px;
-  box-shadow: 4px;
-  padding: 2rem 1rem;
-  background-color: rgb(255, 255, 255);
-  color: rgb(20, 20, 20);
+  padding: 2rem 1.5rem;
+  color: rgb(212, 212, 212);
+  border-top: 5px solid;
+  border-top-color: rgb(111, 111, 230);
+  border-radius: 4px;
+  background-color: rgba(23, 23, 23, 0.906);
+  box-shadow: 0 4px 8px 0 rgba(17, 17, 17, 0.936);
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .meeting-box h2 {
-  font-weight: 500;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: rgb(236, 236, 236);
+}
+.meeting-box h3 {
+  font-weight: 200;
+  font-size: 1.3rem;
+  color: rgb(228, 228, 228);
   margin-bottom: 1rem;
 }
-h3 {
+
+.meeting-box h4 {
   font-weight: 300;
-  font-size: 1.3rem;
+  font-size: 1rem;
+  color: rgb(220, 220, 220);
   margin-bottom: 1rem;
 }
 </style>
@@ -179,7 +189,7 @@ h3 {
             minutes
           </h3>
 
-          <h3>{{ meeting.description }}</h3>
+          <h4>{{ meeting.description }}</h4>
         </div>
       </li>
     </ul>

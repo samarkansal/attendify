@@ -1,8 +1,8 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 
 function isLoggedIn(to, from, next) {
-  if (localStorage.token) {
+  if (localStorage.access_token) {
     next()
   } else {
     next('/')
@@ -40,6 +40,16 @@ const router = createRouter({
       name: 'event',
       component: () => import('../views/EventView.vue'),
       beforeEnter: isLoggedIn
+    },
+    {
+      path: '/attend/:id?/:passkey?',
+      name: 'attend',
+      component: () => import('../views/AttendView.vue')
+    },
+    {
+      path: '/qr',
+      name: 'qr',
+      component: () => import('../views/QrView.vue')
     }
   ]
 })

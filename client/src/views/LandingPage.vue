@@ -13,7 +13,7 @@ const signIn = async () => {
   }
 };
 </script>
-<style>
+<style scoped>
 .bgimg-inner {
   font-size: larger;
   font-weight: bold;

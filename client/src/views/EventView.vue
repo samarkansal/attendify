@@ -8,9 +8,9 @@ import { getUserEmail } from "../utils/userDetail";
 
 const fromDate = ref(new Date());
 const toDate = ref(new Date());
-const location = ref();
-const topic = ref();
-const desc = ref();
+const location = ref("Surge Space building");
+const topic = ref("Meeting standup: " + new Date());
+const desc = ref("Meeting standup desc: " + new Date());
 
 const guests = ref([{ id: 1, label: getUserEmail() }]);
 const newGuest = ref("");
@@ -32,7 +32,6 @@ const sendInvite = async (event) => {
       start_time: fromDate.value,
       end_time: toDate.value,
       organizer: getUserEmail(),
-      qr_code: "ABCDE12345",
     },
     guestList: guests.value,
   };
@@ -41,11 +40,12 @@ const sendInvite = async (event) => {
   try {
     const response = await axios.post(url, meetingObj, {
       headers: {
-        Authorization: `Bearer ${localStorage.token}`,
+        Authorization: `Bearer ${localStorage.access_token}`,
       },
     });
     console.log(response.data);
-    router.push({ name: "dashboard" });
+
+    await router.push({ name: "dashboard" });
     // do something with the response, if needed
   } catch (error) {
     console.error(error);
@@ -57,7 +57,7 @@ const sendInvite = async (event) => {
 };
 </script>
 
-<style>
+<style scoped>
 .bg-hero {
   position: relative;
   background-attachment: fixed;

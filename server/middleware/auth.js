@@ -3,13 +3,16 @@ module.exports = {
   verifyGoogleToken: async function (req, res, next) {
     const token = req.headers.authorization.replace(/^Bearer\s/, "");
     try {
-      const ticket = await oAuth2Client.verifyIdToken({
-        idToken: token,
-        audience: process.env.CLIENT_ID,
-      });
-      const payload = ticket.getPayload();
-      req.user = payload;
-      console.log(payload);
+      // const ticket = await oAuth2Client.verifyIdToken({
+      //   idToken: token,
+      //   audience: process.env.CLIENT_ID,
+      // });
+      const resp = await oAuth2Client.getTokenInfo(token);
+      // const payload = ticket.getPayload();
+      req.user = {
+        email: resp.email,
+      };
+      console.log(resp.user);
       next();
       //return payload;
     } catch (error) {

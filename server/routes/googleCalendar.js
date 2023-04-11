@@ -1,40 +1,50 @@
 const { google } = require("googleapis");
-const { oAuth2Client } = require("../config/google");
+const oAuth2Client = require("../config/google");
 
-const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
+const insertEvent = async (jwtToken, { meetingDetails, guestList }) => {
+  console.log(jwtToken);
+  oAuth2Client.setCredentials({
+    access_token: jwtToken,
+  });
+  console.log(meetingDetails);
+  const attendeesList = guestList.map((guest) => ({
+    email: guest.label,
+  }));
 
-const insertEvent = async () => {
+  const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
+
   const event = {
-    summary: "Event summary",
-    description: "Event description",
-    location: "Event location",
+    summary: meetingDetails.name,
+    description: meetingDetails.description,
+    location: meetingDetails.location,
     start: {
-      dateTime: "2023-04-07T10:00:00-07:00",
+      dateTime: meetingDetails.start_time,
       timeZone: "America/Los_Angeles",
     },
     end: {
-      dateTime: "2023-04-07T12:00:00-07:00",
+      dateTime: meetingDetails.end_time,
       timeZone: "America/Los_Angeles",
     },
-    attendees: [
-      { email: "sameerkansal27@gmail.com" },
-      { email: "samarkansal@vt.edu" },
-    ],
+    attendees: attendeesList,
     reminders: {
       useDefault: true,
     },
   };
-  console.log("BEFORE INSETTInG EVENT");
+
   try {
     const { data } = await calendar.events.insert({
       calendarId: "primary",
       resource: event,
+      sendNotifications: true,
     });
 
     console.log(`Event created: ${data.htmlLink}`);
+    return data.htmlLink;
+    // return "event-sim";
+    // console.log("event");
   } catch (error) {
-    console.log("ERROR INSETTInG EVENT");
     console.error(`Error creating event: ${error}`);
+    throw error;
   }
 };
 

@@ -1,11 +1,11 @@
 <script setup>
 import axios from "axios";
-import { decodeCredential } from "vue3-google-login";
+import { decodeCredential, googleSdkLoaded, googleTokenLogin } from "vue3-google-login";
 import * as Vue from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
-const { API_URL } = "http://localhost:3000/auth";
+const API_URL = "http://localhost:3000/auth";
 const GOOGLE_URL = API_URL + "/google";
 
 const callback = function (response) {
@@ -19,9 +19,65 @@ const callback = function (response) {
   router.push("/dashboard");
   console.log("Handle the userData", userData);
 };
+
+const exchangeCodeForToken = (code) => {
+  const params = new URLSearchParams();
+  params.append("code", code);
+  params.append(
+    "client_id",
+    "1054586386822-oqloh2jc5tmhsnmicntac5il7o4hfiqn.apps.googleusercontent.com"
+  );
+  params.append("client_secret", "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");
+  params.append("redirect_uri", "http://localhost:5173");
+  params.append("grant_type", "authorization_code");
+
+  return axios
+    .post("https://oauth2.googleapis.com/token", params)
+    .then((response) => {
+      console.log(response.data);
+      const { access_token, refresh_token } = response.data;
+      localStorage.setItem("access_token", access_token);
+      localStorage.setItem("refresh_token", refresh_token);
+      axios
+        .get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${access_token}`)
+        .then((res) => {
+          console.log(res);
+          localStorage.userProfile = JSON.stringify(res.data);
+          router.push("/dashboard");
+        });
+    })
+    .catch((error) => {
+      console.error("Failed to exchange code for token", error);
+    });
+};
+
+const login = () => {
+  googleSdkLoaded((google) => {
+    google.accounts.oauth2
+      .initCodeClient({
+        client_id:
+          "1054586386822-oqloh2jc5tmhsnmicntac5il7o4hfiqn.apps.googleusercontent.com",
+        scope: "https://www.googleapis.com/auth/calendar",
+        callback: (response) => {
+          console.log("Handle the response", response);
+          exchangeCodeForToken(response.code);
+        },
+        ux_mode: "popup",
+      })
+      .requestCode();
+  });
+
+  // googleTokenLogin().then((response) => {
+  //   console.log("token ", response.access_token);
+  //   const userData = decodeCredential(response.access_token);
+  //   localStorage.token = response.access_token;
+  //   router.push("/dashboard");
+  //   console.log("Handle the userData", userData);
+  // });
+};
 </script>
 
-<style>
+<style scoped>
 .bgimg-inner {
   font-size: larger;
   font-weight: bold;
@@ -109,14 +165,13 @@ const callback = function (response) {
   font-weight: 550;
 }
 
-GoogleLogin {
+.google-sign {
   width: 230px;
   padding: 10px;
   font-size: 18px;
-  margin-top: 15px;
   border-radius: 4px;
-  background-color: rgb(230, 230, 230);
-  color: rgb(60, 60, 60);
+  background-color: rgb(238, 238, 238);
+  color: rgb(52, 52, 52);
   border: 1px solid rgb(162, 162, 162);
   display: flex;
   flex-direction: row;
@@ -126,12 +181,13 @@ GoogleLogin {
 .google-sign:hover {
   background-color: rgb(244, 244, 244);
   cursor: pointer;
-  color: rgb(20, 20, 20);
+  color: rgb(32, 32, 32);
 }
 
 .google-logo {
   height: 24px;
   width: 24px;
+  background-image: url("/logo-images/google-logo.png");
 }
 h5 {
   margin-top: 1em;
@@ -147,7 +203,11 @@ h5 {
           <h1>Everything you need to organize meeting</h1>
           <p><br /></p>
           <!-- <button class="google-sign" @click="googlePlus">Sign In with Google</button> -->
-          <GoogleLogin :callback="callback" />
+          <!-- <GoogleLogin :callback="callback" /> -->
+          <button class="google-sign" @click="login">
+            <img src="/logo-images/google-logo.png" class="google-logo" />
+            Sign in with Google
+          </button>
           <h5>Attendify helps you schedule meetings and track the attendance.</h5>
         </div>
       </div>

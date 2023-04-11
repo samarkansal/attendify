@@ -18,7 +18,7 @@ export default {
           `http://localhost:3000/api/meeting/${selectedTab}`,
           {
             headers: {
-              Authorization: `Bearer ${localStorage.token}`,
+              Authorization: `Bearer ${localStorage.access_token}`,
             },
           }
         );
@@ -40,9 +40,10 @@ export default {
     });
 
     return {
+      getMeetingList,
+      selectedTab,
       getUserName,
       meetingList,
-      selectedTab,
     };
   },
 };
@@ -78,7 +79,6 @@ export default {
   justify-content: space-between;
   padding: 8rem 4rem;
   height: 10vw;
-  background-color: rgb(215, 215, 215);
 }
 
 .dash-hero {
@@ -97,45 +97,44 @@ export default {
   min-height: 650px;
   top: 0;
   left: 0;
-  background-color: rgba(6, 6, 6, 0.752);
+  background-color: rgba(8, 8, 8, 0.829);
 }
 
 .greeting {
-  color: rgb(44, 44, 44);
+  color: rgb(237, 237, 237);
 }
 
 .tab-container {
   padding: 0 2rem 0 2rem;
-  background-color: rgb(255, 255, 255);
+  background-color: rgba(72, 72, 72, 0.352);
 }
 
 .tab-list {
   display: flex;
   flex-direction: row;
   margin-bottom: 2rem;
-  background-color: rgb(164, 164, 164);
 
   /* border-top: 1px solid; */
 }
 
 .tab-list > li {
-  border-color: rgb(164, 164, 164);
-  padding: 5px 2rem;
-  border-radius: 6px;
+  color: rgb(230, 230, 230);
+  padding: 5px 1rem;
   border-bottom: none;
+  font-weight: 700;
   cursor: pointer;
-  padding: 0.5rem;
-  font-weight: 300;
-
-  background-color: rgb(164, 164, 164);
+  margin: 0.5rem;
 }
 
 .tab-list li.active {
-  background-color: rgb(255, 255, 255);
+  border-bottom: 2px solid;
+  border-color: rgb(231, 231, 255);
+  color: white;
 }
 
 .tab-list li:hover {
-  background-color: #ccc;
+  border-bottom: 2px solid;
+  border-color: rgb(231, 231, 255);
 }
 </style>
 
@@ -146,7 +145,7 @@ export default {
         <div class="top-box">
           <h1 class="greeting">Hi {{ getUserName() }} !</h1>
           <router-link to="/event">
-            <button class="primary-button">Create new event</button>
+            <button class="primary-button">+ Create new event</button>
           </router-link>
         </div>
         <div class="tab-container">
