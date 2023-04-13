@@ -54,7 +54,7 @@ const exchangeCodeForToken = (code) => {
         .then((res) => {
           console.log(res);
           localStorage.userProfile = JSON.stringify(res.data);
-          router.push("/qr");
+          router.push(`/qr/${route.params.id}`);
         });
     })
     .catch((error) => {

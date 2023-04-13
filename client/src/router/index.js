@@ -47,7 +47,7 @@ const router = createRouter({
       component: () => import('../views/AttendView.vue')
     },
     {
-      path: '/qr',
+      path: '/qr/:meetingId',
       name: 'qr',
       component: () => import('../views/QrView.vue')
     },

@@ -144,7 +144,7 @@ const formatDateTime = (input) => {
 }
 
 .meeting-box {
-  height: 270px;
+  height: 250px;
   width: 310px;
   padding: 2rem 1.5rem;
   color: rgb(212, 212, 212);
@@ -158,9 +158,13 @@ const formatDateTime = (input) => {
 }
 
 .meeting-box h2 {
+  font-size: 1.6rem;
   font-weight: 600;
   margin-bottom: 1rem;
   color: rgb(236, 236, 236);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .meeting-box h3 {
   font-weight: 200;
@@ -174,6 +178,10 @@ const formatDateTime = (input) => {
   font-size: 1rem;
   color: rgb(220, 220, 220);
   margin-bottom: 1rem;
+  max-lines: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .scan-link {
@@ -187,12 +195,12 @@ const formatDateTime = (input) => {
 
 .attendance-link {
   margin-top: 10px;
-  color: rgb(59, 65, 246);
+  color: rgb(103, 108, 246);
   font-size: 1rem;
 }
 
 .attendance-link:hover {
-  color: rgb(55, 55, 211);
+  color: rgb(197, 197, 243);
 }
 </style>
 

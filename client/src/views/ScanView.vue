@@ -1,6 +1,16 @@
 <style>
+h2 {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+h1 {
+  font-size: 1.5rem;
+}
 .scan-container {
-  padding: 150px;
+  padding: 120px;
+  padding-bottom: 200px;
+  height: 800px;
 }
 
 .decode-result {
@@ -11,14 +21,18 @@
 </style>
 
 <template>
-  <div class="scan-container">
-    <p class="error">{{ error }}</p>
+  <div class="cont">
+    <div class="scan-container">
+      <p class="error">{{ error }}</p>
+      <div class="decode-result">
+        <h2>Last result: {{ result }}</h2>
+        <h1>
+          Status: <b>{{ serverMsg }}</b>
+        </h1>
+      </div>
 
-    <h2 class="decode-result">
-      Last result: <b>{{ result }}</b>
-    </h2>
-
-    <qrcode-stream @decode="onDecode" @init="onInit" />
+      <qrcode-stream @decode="onDecode" @init="onInit" />
+    </div>
   </div>
 </template>
 
@@ -34,12 +48,13 @@ export default {
     return {
       result: "",
       error: "",
+      serverMsg: "",
     };
   },
 
   methods: {
     async onDecode(result) {
-      this.result = result + ":\n";
+      this.result = result;
       try {
         const response = await axios.post("http://localhost:3000/api/qr/verifyQR", {
           qrCode: result,
@@ -47,21 +62,21 @@ export default {
         if (response.status === 200) {
           // Display success message
           console.log("QR code verified");
-          this.result += "QR code verified";
+          this.serverMsg = "QR code verified";
         } else {
           // Display error message from server
           console.log(response.data.message);
-          this.result += response.data.message;
+          this.serverMsg += response.data.message;
         }
       } catch (error) {
         if (error.response.status === 400) {
           // Display error message from server
           console.log(error.response.data.message);
-          this.result += error.response.data.message;
+          this.serverMsg = error.response.data.message;
         } else if (error.response.status === 500) {
           // Display server error message
           console.error(error);
-          this.result += "Server error";
+          this.serverMsg = "Server error";
         }
       }
     },

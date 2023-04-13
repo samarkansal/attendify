@@ -13,6 +13,7 @@
 import axios from "axios";
 import QrcodeVue from "qrcode.vue";
 import { reactive, ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
 
 export default {
   components: {
@@ -22,6 +23,7 @@ export default {
     const qrCodeData = ref(null);
     const size = 300;
     const timeLeft = ref(30);
+    const route = useRoute();
 
     const generateQRAndStartTimer = async () => {
       await generateQR();
@@ -30,12 +32,13 @@ export default {
 
     const generateQR = async () => {
       try {
+        console.log("TESTSTST:", route.params.meetingId);
         const url = "http://localhost:3000/api/qr/generateQR";
-        const meetingObj = JSON.parse(localStorage.meeting);
+        //const meetingObj = JSON.parse(localStorage.meeting);
         const userObj = JSON.parse(localStorage.userProfile);
         const response = await axios.post(
           url,
-          { meetingId: meetingObj._id, userId: userObj.email },
+          { meetingId: route.params.meetingId, userId: userObj.email },
           {
             headers: {
               Authorization: `Bearer ${localStorage.access_token}`,

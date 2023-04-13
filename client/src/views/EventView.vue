@@ -45,7 +45,7 @@ const sendInvite = async (event) => {
     });
     console.log(response.data);
 
-    await router.push({ name: "dashboard" });
+    await router.push("/dashboard");
     // do something with the response, if needed
   } catch (error) {
     console.error(error);
