@@ -1,79 +1,44 @@
 <script setup>
 import axios from "axios";
-import { decodeCredential, googleSdkLoaded, googleTokenLogin } from "vue3-google-login";
-import * as Vue from "vue";
+import { googleSdkLoaded } from "vue3-google-login";
 import { useRouter } from "vue-router";
-
 const router = useRouter();
-const API_URL = "http://localhost:3000/auth";
-const GOOGLE_URL = API_URL + "/google";
 
-const callback = function (response) {
-  // This callback will be triggered when user click on the One Tap prompt
-  // This callback will be also triggered when user click on login button
-  // and selects or login to his Google account from the popup
-  // decodeCredential will retrive the JWT payload from the credential
-  const userData = decodeCredential(response.credential);
-  console.log(response);
-  localStorage.token = response.credential;
-  router.push("/dashboard");
-  console.log("Handle the userData", userData);
-};
+const googleClientId = import.meta.env.VITE_GOOGLE_OAUTH_CLIENT_ID;
+const googleClientSecret = import.meta.env.VITE_GOOGLE_OAUTH_CLIENT_SECRET;
 
-const exchangeCodeForToken = (code) => {
-  const params = new URLSearchParams();
-  params.append("code", code);
-  params.append(
-    "client_id",
-    "1054586386822-oqloh2jc5tmhsnmicntac5il7o4hfiqn.apps.googleusercontent.com"
-  );
-  params.append("client_secret", "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");
-  params.append("redirect_uri", "http://localhost:5173");
-  params.append("grant_type", "authorization_code");
-
-  return axios
-    .post("https://oauth2.googleapis.com/token", params)
-    .then((response) => {
-      console.log(response.data);
-      const { access_token, refresh_token } = response.data;
-      localStorage.setItem("access_token", access_token);
-      localStorage.setItem("refresh_token", refresh_token);
-      axios
-        .get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${access_token}`)
-        .then((res) => {
-          console.log(res);
-          localStorage.userProfile = JSON.stringify(res.data);
-          router.push("/dashboard");
-        });
-    })
-    .catch((error) => {
-      console.error("Failed to exchange code for token", error);
+const exchangeCodeForToken = async (code) => {
+  try {
+    const resp = await axios.post(import.meta.env.VITE_SERVER_ENDPOINT + "/auth/google", {
+      code: code,
     });
+    const { tokens, userProfile } = resp.data;
+
+    // Store tokens and userProfile in local storage
+    localStorage.setItem("tokens", JSON.stringify(tokens));
+    localStorage.setItem("userProfile", JSON.stringify(userProfile));
+
+    // Redirect to dashboard
+    router.push("/dashboard");
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-const login = () => {
-  googleSdkLoaded((google) => {
+const login = async () => {
+  googleSdkLoaded(async (google) => {
     google.accounts.oauth2
       .initCodeClient({
-        client_id:
-          "1054586386822-oqloh2jc5tmhsnmicntac5il7o4hfiqn.apps.googleusercontent.com",
+        client_id: googleClientId,
         scope: "https://www.googleapis.com/auth/calendar",
-        callback: (response) => {
+        callback: async (response) => {
           console.log("Handle the response", response);
-          exchangeCodeForToken(response.code);
+          await exchangeCodeForToken(response.code);
         },
         ux_mode: "popup",
       })
       .requestCode();
   });
-
-  // googleTokenLogin().then((response) => {
-  //   console.log("token ", response.access_token);
-  //   const userData = decodeCredential(response.access_token);
-  //   localStorage.token = response.access_token;
-  //   router.push("/dashboard");
-  //   console.log("Handle the userData", userData);
-  // });
 };
 </script>
 

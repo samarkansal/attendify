@@ -1,4 +1,4 @@
-<style>
+<style scoped>
 h2 {
   font-size: 1rem;
   margin-bottom: 10px;
@@ -16,7 +16,7 @@ h1 {
 .decode-result {
   color: rgb(54, 54, 54);
   margin-bottom: 50px;
-  width: 300px;
+  width: 100%;
 }
 </style>
 
@@ -56,9 +56,19 @@ export default {
     async onDecode(result) {
       this.result = result;
       try {
-        const response = await axios.post("http://localhost:3000/api/qr/verifyQR", {
-          qrCode: result,
-        });
+        const response = await axios.post(
+          "http://localhost:3000/api/qr/verifyQR",
+          {
+            qrCode: result,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${
+                JSON.parse(localStorage.getItem("tokens")).access_token
+              }`,
+            },
+          }
+        );
         if (response.status === 200) {
           // Display success message
           console.log("QR code verified");

@@ -1,6 +1,6 @@
 export const getUserName = () => {
   if (localStorage.userProfile) {
-    return JSON.parse(localStorage.userProfile).given_name
+    return JSON.parse(localStorage.userProfile).name
   }
   return ''
 }
@@ -13,6 +13,9 @@ export const getUserEmail = () => {
 }
 
 export const clearToken = () => {
+  if (localStorage.tokens) {
+    localStorage.setItem('tokens', '')
+  }
   if (localStorage.token) {
     localStorage.setItem('token', '')
   }

@@ -2,7 +2,7 @@ import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router
 import HomeView from '../views/HomeView.vue'
 
 function isLoggedIn(to, from, next) {
-  if (localStorage.access_token) {
+  if (localStorage.userProfile) {
     next()
   } else {
     next('/')
@@ -47,7 +47,7 @@ const router = createRouter({
       component: () => import('../views/AttendView.vue')
     },
     {
-      path: '/qr/:meetingId',
+      path: '/qr/:meetingId?',
       name: 'qr',
       component: () => import('../views/QrView.vue')
     },

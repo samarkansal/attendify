@@ -27,6 +27,17 @@ router.get("/:eventType", verifyGoogleToken, async (req, res) => {
   }
 });
 
+router.get("/id/:meetingId", verifyGoogleToken, async (req, res) => {
+  try {
+    console.log(req.params.meetingId);
+    const meeting = await Meeting.findById(req.params.meetingId);
+    if (!meeting) throw new Error("No Meeting found");
+    res.status(200).json(meeting);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //To check if valid meeting_id and passkey
 
 router.get("/:id/:passkey", async (req, res) => {
@@ -44,18 +55,41 @@ router.get("/:id/:passkey", async (req, res) => {
 
 router.post("/", verifyGoogleToken, async (req, res) => {
   const passkey = shortid.generate();
-  const newMeeting = new Meeting({ ...req.body.meetingDetails, passkey });
+  const { name, description, location, start_time, end_time } =
+    req.body.meetingDetails;
+  const newMeeting = new Meeting({
+    name,
+    description,
+    location,
+    start_time,
+    end_time,
+    organizer: req.user.email, // Set the organizer to the email from verifyGoogleToken
+    passkey,
+  });
   try {
     const meeting = await newMeeting.save();
+    console.log(meeting);
     if (!meeting)
       throw new Error("Something went wrong while saving the Meeting");
-    const url = "http://localhost:3000/api/meetingAttendance";
-    const response = await axios.post(url, {
-      id: meeting._id,
-      guestList: req.body.guestList,
-    });
+    const url = `${process.env.BASE_URL}/api/meetingAttendance`;
+    const token = req.headers.authorization.replace(/^Bearer\s/, "");
+    const response = await axios.post(
+      url,
+      {
+        id: meeting._id,
+        guestList: [
+          ...req.body.guestList,
+          { id: req.body.guestList.length + 1, label: req.user.email },
+        ],
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     console.log(response.data);
-    req.body.meetingDetails.description += `\nPlease use the following link to check in for attendance:\nhttp://localhost:5173/attend/${meeting._id}/${passkey}`;
+    req.body.meetingDetails.description += `\nPlease use the following link to check in for attendance:\n${process.env.CLIENT_BASE_URL}/attend/${meeting._id}/${passkey}`;
     const ev = await insertEvent(
       req.headers.authorization.replace(/^Bearer\s/, ""),
       req.body

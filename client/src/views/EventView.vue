@@ -40,7 +40,9 @@ const sendInvite = async (event) => {
   try {
     const response = await axios.post(url, meetingObj, {
       headers: {
-        Authorization: `Bearer ${localStorage.access_token}`,
+        Authorization: `Bearer ${
+          JSON.parse(localStorage.getItem("tokens")).access_token
+        }`,
       },
     });
     console.log(response.data);

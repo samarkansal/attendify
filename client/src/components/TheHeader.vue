@@ -2,6 +2,9 @@
 import { getUserName } from "../utils/userDetail";
 import { clearToken } from "../utils/userDetail";
 import { useRouter } from "vue-router";
+import { ref } from "vue";
+
+const userName = ref(getUserName);
 
 const router = useRouter();
 const logout = () => {
