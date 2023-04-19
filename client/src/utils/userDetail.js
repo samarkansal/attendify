@@ -28,5 +28,8 @@ export const clearToken = () => {
   if (localStorage.userProfile) {
     localStorage.setItem('userProfile', '')
   }
+  if (localStorage.meeting) {
+    localStorage.setItem('meeting', '')
+  }
   return ''
 }

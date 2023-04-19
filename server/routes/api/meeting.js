@@ -73,14 +73,15 @@ router.post("/", verifyGoogleToken, async (req, res) => {
       throw new Error("Something went wrong while saving the Meeting");
     const url = `${process.env.BASE_URL}/api/meetingAttendance`;
     const token = req.headers.authorization.replace(/^Bearer\s/, "");
+    var glist = req.body.guestList;
+    if (!glist.map((a) => a.label).includes(req.user.email)) {
+      glist.push({ id: req.body.guestList.length + 1, label: req.user.email });
+    }
     const response = await axios.post(
       url,
       {
         id: meeting._id,
-        guestList: [
-          ...req.body.guestList,
-          { id: req.body.guestList.length + 1, label: req.user.email },
-        ],
+        guestList: glist,
       },
       {
         headers: {
@@ -92,7 +93,7 @@ router.post("/", verifyGoogleToken, async (req, res) => {
     req.body.meetingDetails.description += `\nPlease use the following link to check in for attendance:\n${process.env.CLIENT_BASE_URL}/attend/${meeting._id}/${passkey}`;
     const ev = await insertEvent(
       req.headers.authorization.replace(/^Bearer\s/, ""),
-      req.body
+      { meetingDetails: req.body.meetingDetails, guestList: glist }
     );
     // do something with the response, if needed
     res.status(200).json(ev);
