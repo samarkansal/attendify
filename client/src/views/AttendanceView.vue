@@ -11,6 +11,9 @@
           {{ getMeetingMinutes(meeting.start_time, meeting.end_time) }} minutes
         </h3>
         <div class="action-container">
+          <button class="download-button" @click="downloadCSVData">
+              <i class="fas fa-solid fa-download"></i>&nbsp;Download Report
+          </button>
           <button class="refresh-list" @click="refreshData">
             <i class="fas fa-sync-alt"></i>&nbsp;Refresh
           </button>
@@ -29,6 +32,7 @@
                 <div>{{ attendance.attended }}</div>
               </li>
             </ul>
+            
             <div class="canvas-cont"><canvas id="attendance-chart"></canvas></div>
           </div>
         </div>
@@ -143,6 +147,21 @@ h1 {
   font-weight: 550;
 }
 
+.download-button {
+  width: 150px;
+  border: none;
+  padding: 10px 20px;
+  font-size: 20px;
+  border-radius: 4px;
+  background-color: rgb(28, 126, 4);
+  color: rgb(237, 237, 237);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin: 30px 10px;
+  font-weight: 550;
+}
+
 .refresh-list:hover {
   background-color: rgb(97, 73, 255);
   cursor: pointer;
@@ -168,6 +187,28 @@ export default {
     this.refreshData();
   },
   methods: {
+    async downloadCSVData() {
+      try{
+        let csv = 'Meeting ID, User ID, attended\n';
+        console.log(csv);
+        this.meetingAttendanceList.forEach((row) => {
+                let r = [row['meeting_id'], row['user_id'], row['attended']];
+                csv += r.join(',');
+                csv += "\n";
+        });
+        const anchor = document.createElement('a');
+        anchor.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+        anchor.target = '_blank';
+        anchor.download = this.meetingId+'_attendance_report.csv';
+        anchor.click();
+      }
+      catch(error){
+        console.log(error);
+      }  
+    
+        
+    },
+
     async refreshData() {
       try {
         const meetingId = this.meetingId;
@@ -276,5 +317,6 @@ export default {
       return Math.round((numAttendees / totalAttendees) * 100);
     },
   },
-};
+
+  };
 </script>
