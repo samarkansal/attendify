@@ -5,7 +5,6 @@ const { verifyGoogleToken } = require("../../middleware/auth");
 const insertEvent = require("../googleCalendar");
 const shortid = require("shortid");
 const mongoose = require("mongoose");
-
 const router = Router();
 
 router.get("/:eventType", verifyGoogleToken, async (req, res) => {
