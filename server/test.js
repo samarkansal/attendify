@@ -1,14 +1,23 @@
 var request = require('supertest');
 
-describe('loading express', function () {
+describe('loading express', () => {
   var server;
   beforeEach(function () {
     server = require('./index');
   });
-  afterEach(function (done) {
-    server.close(done);
+  it('Server is Running', async () =>  {
+    const response = await request(server)
+      .get('/')
+      .expect(200);
   });
-  it('responds 401 to /generateQR with wrong JWT', generateQR = async () =>  {
+});
+
+describe('Endpoints are accessible to only authorized users', async => {
+  var server;
+  beforeEach(function () {
+    server = require('./index');
+  });
+  it('responds 401 to /generateQR with wrong JWT', async () =>  {
     const jwt = 'dummyJWT';
     const payload = {meetindId: '123', userId: 'test@test.com'}
     const response = await request(server)
