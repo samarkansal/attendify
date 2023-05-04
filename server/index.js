@@ -9,7 +9,6 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const connectDB = require("./config/db");
 var cors = require("cors");
-
 // Load config
 dotenv.config({ path: "./config/config.env" });
 
@@ -85,6 +84,10 @@ app.use(function (req, res, next) {
   next();
 });
 
+app.get('/', (req, res) => {
+  res.send('Works!!!');
+  });
+
 // Static folder
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -97,7 +100,7 @@ app.use("/auth", require("./routes/auth"));
 app.use("/api/qr", require("./routes/api/qr"));
 const PORT = process.env.PORT || 3000;
 
-app.listen(
+module.exports = app.listen(
   PORT,
   console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)
 );
