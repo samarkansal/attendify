@@ -1,44 +1,18 @@
 <script setup>
-import axios from "axios";
-import { googleSdkLoaded } from "vue3-google-login";
+import { login } from "../utils/login";
 import { useRouter } from "vue-router";
+import { inject } from "vue";
+
+const isAuthenticated = inject("isAuthenticated");
 const router = useRouter();
 
-const googleClientId = import.meta.env.VITE_GOOGLE_OAUTH_CLIENT_ID;
-const googleClientSecret = import.meta.env.VITE_GOOGLE_OAUTH_CLIENT_SECRET;
-
-const exchangeCodeForToken = async (code) => {
-  try {
-    const resp = await axios.post(import.meta.env.VITE_SERVER_ENDPOINT + "/auth/google", {
-      code: code,
-    });
-    const { tokens, userProfile } = resp.data;
-
-    // Store tokens and userProfile in local storage
-    localStorage.setItem("tokens", JSON.stringify(tokens));
-    localStorage.setItem("userProfile", JSON.stringify(userProfile));
-
-    // Redirect to dashboard
-    router.push("/dashboard");
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const login = async () => {
-  googleSdkLoaded(async (google) => {
-    google.accounts.oauth2
-      .initCodeClient({
-        client_id: googleClientId,
-        scope: "https://www.googleapis.com/auth/calendar",
-        callback: async (response) => {
-          console.log("Handle the response", response);
-          await exchangeCodeForToken(response.code);
-        },
-        ux_mode: "popup",
-      })
-      .requestCode();
-  });
+const loginRedirect = async () => {
+  await login();
+  // Redirect to dashboard
+  console.log("HAHAHA");
+  console.log(router);
+  isAuthenticated.value = true;
+  router.push("/dashboard");
 };
 </script>
 
@@ -169,7 +143,7 @@ h5 {
           <p><br /></p>
           <!-- <button class="google-sign" @click="googlePlus">Sign In with Google</button> -->
           <!-- <GoogleLogin :callback="callback" /> -->
-          <button class="google-sign" @click="login">
+          <button class="google-sign" @click="loginRedirect">
             <img src="/logo-images/google-logo.png" class="google-logo" />
             Sign in with Google
           </button>

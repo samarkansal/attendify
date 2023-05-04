@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router
 import HomeView from '../views/HomeView.vue'
 
 function isLoggedIn(to, from, next) {
+  console.log('HEREE')
   if (localStorage.userProfile) {
     next()
   } else {
@@ -19,7 +20,15 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
+      beforeEnter: (to, from, next) => {
+        const token = JSON.parse(localStorage.getItem('tokens'))
+        if (token && token.expiry_date > Date.now()) {
+          next('/dashboard')
+        } else {
+          next()
+        }
+      }
     },
     {
       path: '/about',
@@ -32,8 +41,8 @@ const router = createRouter({
     {
       path: '/dashboard',
       name: 'dashboard',
-      component: () => import('../views/DashboardView.vue'),
-      beforeEnter: isLoggedIn
+      component: () => import('../views/DashboardView.vue')
+      // beforeEnter: isLoggedIn
     },
     {
       path: '/event',

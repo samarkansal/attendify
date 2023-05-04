@@ -21,6 +21,7 @@
     "config": "^3.3.9",
     "connect-mongo": "^5.0.0",
     "cors": "^2.8.5",
+    "csv-parser": "^3.0.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-handlebars": "^7.0.4",
@@ -38,6 +39,7 @@
     "qrcode-reader": "^1.0.4",
     "qs": "^6.11.1",
     "shortid": "^2.2.16",
+    "streamifier": "^0.1.1",
     "vue-time-date-range-picker": "^2.1.0"
   },
   "devDependencies": {
