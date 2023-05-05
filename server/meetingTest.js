@@ -23,7 +23,14 @@ async function runTests() {
     scope: scopes,
   });
 
-  console.log(`Authorize this app by visiting this url: ${authUrl}`);
+  const reset = "\x1b[0m";
+  const yellowBg = "\x1b[43m";
+  const blackFg = "\x1b[30m";
+  const lightBlueFg = "\x1b[94m";
+  console.log(
+    `\n\n${yellowBg}${blackFg}Authorize this app by visiting this url:${reset} ${lightBlueFg}${authUrl}${reset}\n\n`
+  );
+
   const code = readlineSync.question("Enter the code from that page here: ");
   const { tokens } = await oAuth2Client.getToken(code);
   // Run the test with the authorized token
@@ -114,7 +121,7 @@ async function runTests() {
       sortedGuestList[1].label === returnedGuestList[1].email,
       "Guest email is incorrect"
     );
-    console.log("\n****Guest list verified successfully!****");
+    console.log("\n****Guest list verified successfully!****\n");
   } catch (error) {
     console.error("Tests failed:", error);
   }
