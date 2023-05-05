@@ -84,9 +84,9 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.get('/', (req, res) => {
-  res.send('Works!!!');
-  });
+app.get("/", (req, res) => {
+  res.send("Your auth code:  " + req.query.code);
+});
 
 // Static folder
 app.use(express.static(path.join(__dirname, "public")));
