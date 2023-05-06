@@ -10,7 +10,7 @@ const router = Router();
 router.post("/generateQR", verifyGoogleToken, async (req, res, next) => {
   const meetingId = req.body.meetingId;
   const userId = req.user.email;
-  const expirationTime = new Date().getTime() + 40000; // 40 seconds from now
+  const expirationTime = new Date().getTime() + 30000; // 40 seconds from now
 
   const inputString = `${meetingId},${userId},${expirationTime}`;
 
