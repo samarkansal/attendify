@@ -9,9 +9,9 @@ Meeting Scheduler and QR-Based Attendance Management System
 
 - [Introduction](#introduction)
 - [Resources](#resources)
-- [System Requirements](#System Requirements)
+- [System Requirements](#system-requirements)
 - [Instructions](#instructions)
-- [Behaviour of System](#Behaviour of System)
+- [Behaviour of System](#behaviour-of-system)
 - [Tests](#tests)
 - [Project Management](#project-management)
 - [Group Members](##group-members---tu-beer-hai-bc)
