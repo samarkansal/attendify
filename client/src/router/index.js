@@ -22,8 +22,22 @@ const router = createRouter({
       name: 'home',
       component: HomeView,
       beforeEnter: (to, from, next) => {
-        const token = JSON.parse(localStorage.getItem('tokens'))
-        if (token && token.expiry_date > Date.now()) {
+        const tokenString = localStorage.getItem('tokens')
+        if (!tokenString) {
+          next()
+          return
+        }
+
+        let token
+        try {
+          token = JSON.parse(tokenString)
+        } catch (error) {
+          console.error('Invalid token:', error)
+          next()
+          return
+        }
+
+        if (token.expiry_date > Date.now()) {
           next('/dashboard')
         } else {
           next()
