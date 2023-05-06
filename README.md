@@ -40,8 +40,6 @@ To run Attendify on your local machine, you need to have the following software 
 
 ## Instructions
 
-Download the .zip file from the backup folder. Alternaltively, you can choose to clone. Then unzip the file and install the requirements.
-
 - Step 1: Ensure that you have Node.js installed on your computer. You can check whether it's installed by running the following command:
 ```
 node -v
