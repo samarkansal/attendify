@@ -92,7 +92,7 @@ If you are not a test user, you will not be able to log in at this time.
 
   Once you are authenticated and on the dashboard...
 
-  step 1: By default, the "Upcoming Meetings" tab will be selected. You can click on the "Past Meetings" tab to view your previous meetings.
+  step 1: By default, the "Upcoming events" tab will be selected. You can click on the "Past Events" tab to view your previous meetings.
 
   step 2: Each meeting will be displayed in a card-shaped component that includes the topic, description, duration, and start time.
 <p align="center">
@@ -109,7 +109,7 @@ If you are not a test user, you will not be able to log in at this time.
 
   step 2: Fill in the meeting details, including the topic, description, duration, start time, and guest list.
 
-  step 3: Click the "Create Event" button to schedule a Google Calendar event and invite attendees.
+  step 3: Click the "Send Invite" button to schedule a Google Calendar event and invite attendees.
 
   step 4: If successful, you will receive notifications and the new meeting will be displayed in a card on your dashboard.
   
