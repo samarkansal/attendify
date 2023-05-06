@@ -9,10 +9,13 @@ Meeting Scheduler and QR-Based Attendance Management System
 
 - [Introduction](#introduction)
 - [Resources](#resources)
+- [System Requirements](#System Requirements)
 - [Instructions](#instructions)
-- [Installation](#installation)
-- [Contributing](#contributing)
-- [License](#license)
+- [Behaviour of System](#Behaviour of System)
+- [Tests](#tests)
+- [Project Management](#project-management)
+- [Group Members](##group-members---tu-beer-hai-bc)
+- [Acknowledgements](#acknowledgements)
 
 **Note** that all links in this README file are restricted to members of our organization and can only be accessed using a VT Gmail account. If you are not a member of our organization, please contact the project owner for more information.
 
@@ -70,6 +73,8 @@ This will install the necessary node packages for the client and server, and sta
 <img width="1153" alt="Screenshot 2023-05-06 at 12 15 45 PM" src="https://user-images.githubusercontent.com/51323046/236635325-26164e1f-2ad9-404b-a691-6b6f701dd5cd.png">
 
 **Note**: Make sure that the client starts on port 5173 and the server starts on port 3000. This is important because the web app uses static URLs for both the client and server, and changing the ports will break the app.
+
+## Behaviour of System
 
 **USE-CASE 1**
 - *Authenticate with Google account*
@@ -186,14 +191,10 @@ Feel free to browse our Jira board to get an idea of our progress and to view th
 ## Group Members - Tu Beer hai, BC
 The following are the members of our project team:
 
-- Samar Kansal (Github: [https://github.com/samarkansal](samarkansal))
-  VT ID: samarkansal
-- Shankar Srinidhi Srinivas (Github: [https://github.com/shankarsrinidhi](shankarsrinidhi))
-  VT ID: shankarsrinidhi
-- Ashrith Reddy Thukkaraju (Github: [https://github.com/AshrithReddyT](AshrithReddyT))
-  VT ID: ashrithreddyt
-- Amith Reddy Nalla Venkat (Github: [https://github.com/amith2233](amith2233))
-  VT ID: amithreddy
+- Samar Kansal (Github: [samarkansal](https://github.com/samarkansal))</br> VT ID: samarkansal
+- Shankar Srinidhi Srinivas (Github: [shankarsrinidhi](https://github.com/shankarsrinidhi))</br> VT ID: shankarsrinidhi
+- Ashrith Reddy Thukkaraju (Github: [AshrithReddyT](https://github.com/AshrithReddyT))</br> VT ID: ashrithreddyt
+- Amith Reddy Nalla Venkat (Github: [amith2233](https://github.com/amith2233))</br> VT ID: amithreddy
 
 Please feel free to contact any of our team members if you have any questions or concerns about our project.
 
