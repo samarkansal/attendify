@@ -14,7 +14,7 @@ Meeting Scheduler and QR-Based Attendance Management System
 - [Behaviour of System](#behaviour-of-system)
 - [Tests](#tests)
 - [Project Management](#project-management)
-- [Group Members](##group-members---tu-beer-hai-bc)
+- [Group Members](#group-members---tu-beer-hai-bc)
 - [Acknowledgements](#acknowledgements)
 
 **Note** that all links in this README file are restricted to members of our organization and can only be accessed using a VT Gmail account. If you are not a member of our organization, please contact the project owner for more information.
@@ -76,12 +76,14 @@ This will install the necessary node packages for the client and server, and sta
 
 **USE-CASE 1**
 - *Authenticate with Google account*
+</br>**Note**: As this app is not published and is currently using a free version of the Google API, only the project members and the following test users can log in to the web app: [dcbrown@vt.edu, smgruber@vt.edu]. 
+If you are not a test user, you will not be able to log in at this time.
 
   Once the system (Server and Client) is up and running...
 
   step 1: Open this link: http://localhost:5173/ in a browser.
 
-  step 2: Click on the "Google sign-in" button on the homepage to authenticate yourself with your Google account.
+  step 2: Click on the "Sign in with Google" button on the homepage to authenticate yourself with your Google account.
 
   step 3: If successful, you will be redirected to your dashboard.
   
