@@ -139,7 +139,6 @@ If you are not a test user, you will not be able to log in at this time.
 
 Please find the recorded demo below, which covers the instructions for running the application as well as the test cases and the entire workflow.
 [Attendify Project Demo](https://www.youtube.com/watch?v=KfypQMR2_yM)
-[Attendify Project Demo Full (Need Drive Access)](https://drive.google.com/file/d/11GLv5hjsEOnj8PXZeDI6-zp9rW5TH4-q/view?usp=sharing)
 
 ## Tests
 
